@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const FILE_PATH = path.join(__dirname, 'form_submissions.xlsx');
+const FILE_PATH = path.join(__dirname, '/data/form_submissions.xlsx');
 const SHEET_NAME = 'Submissions';
 
 // The columns you'll write in this exact order
