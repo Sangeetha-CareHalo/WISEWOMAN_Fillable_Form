@@ -105,20 +105,25 @@ app.get('/api/health', (req, res) => res.json({ ok: true }));
 // Append a row
 app.post('/api/submit', async (req, res) => {
   try {
-    console.log('Incoming body keys:', Object.keys(req.body));  // DEBUG
+    console.log("📥 Incoming request body:", req.body); // Debug the data
+
     const { workbook: wb, worksheet: ws } = await ensureWorkbook(columns);
 
-    // Map body → columns in fixed order
-    const rowValues = columns.map(key => (req.body[key] ?? ''));
-    console.log('Row (ordered) ->', rowValues); // DEBUG
+    // Map body to column order
+    const rowValues = columns.map(key => req.body[key] || '');
+    console.log("📊 Row to save:", rowValues);
 
+    // Add new row
     ws.addRow(rowValues);
+
+    // Save to Excel file
     await wb.xlsx.writeFile(FILE_PATH);
 
-    res.json({ status: 'Saved', rows: ws.rowCount });
+    console.log("✅ Row successfully saved!");
+    res.json({ status: 'Saved successfully' });
   } catch (err) {
-    console.error('Save failed:', err); // DEBUG
-    res.status(500).json({ error: 'Failed to save row', details: String(err) });
+    console.error("❌ Server error in /api/submit:", err); // Full stack trace
+    res.status(500).json({ error: 'Failed to save row', details: err.message });
   }
 });
 
