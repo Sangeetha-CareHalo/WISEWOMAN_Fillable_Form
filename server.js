@@ -61,7 +61,8 @@ const columns = [
   "what_is_your_housing_situation_today",
   "how_often_does_your_partner_physically_hurt_insult_or_talk_down_to_you",
   "do_you_occasionally_forget_become_careless_or_discontinue_your_name_of_health_condition_medication_either_when_feeling_better_or_if_experiencing_worsened_symptoms_after_taking_it",
-  "social_service_id","social_service_referral_date","date_of_social_services_and_support_utilization"
+  "social_service_id","social_service_referral_date","date_of_social_services_and_support_utilization",
+  "createdAt"
 ];
 
 let workbook = null;
@@ -108,9 +109,9 @@ app.post('/api/submit', async (req, res) => {
     console.log("📥 Incoming request body:", req.body); // Debug the data
 
     const { workbook: wb, worksheet: ws } = await ensureWorkbook(columns);
-
+    const timestamp = new Date().toISOString();
     // Map body to column order
-    const rowValues = columns.map(key => req.body[key] || '');
+    const rowValues = [columns.map(key => req.body[key] || ''),timestamp];
     console.log("📊 Row to save:", rowValues);
 
     // Add new row
