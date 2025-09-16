@@ -600,9 +600,11 @@ async function submitForm(e) {
   console.log('Submitting payload:', data); // DEBUG
 
   try {
-    const res = await fetch('/api/submit', {
+
+    const API_BASE = 'https://wise-woman-form.onrender.com';
+    const res = await fetch(`${API_BASE}/api/submit`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
 
